@@ -1,6 +1,8 @@
+import 'package:contacts_app_by_flutter/auth_prefs.dart';
 import 'package:contacts_app_by_flutter/pages/contact_details-page.dart';
+import 'package:contacts_app_by_flutter/pages/login_page.dart';
 import 'package:contacts_app_by_flutter/pages/new_contact_page.dart';
-import 'package:contacts_app_by_flutter/providers/contact_prover.dart';
+import 'package:contacts_app_by_flutter/providers/contact_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,29 +21,19 @@ class _ContactListPageState extends State<ContactListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Contact List Page'),
-      ),body: Consumer<ContactProvider>(
-      builder: (context, provider,_)=>ListView.builder(
-        itemCount: provider.contactList.length,
-        itemBuilder: (context, index){
-          final contact = provider.contactList[index];
-          return ListTile(
-            onTap: ()=> Navigator.
-            pushNamed(context, ContactDetailsPage.routeName,
-                arguments: contact.id),
-            title: Text(contact.name),
-            subtitle: Text(contact.number),
-            trailing: IconButton(
-              icon: Icon(
-                contact.isFavourite? Icons.favorite: Icons.favorite_border,
+        actions: [
+          PopupMenuButton(
 
-              ),onPressed: (){
-
-            },
-            ),
-          );
-        }
-      )
-    ),
+              itemBuilder: (context)=>[
+                PopupMenuItem(
+    onTap: (){
+      setLoginStatus(false).then((value)=>
+          Navigator.pushReplacementNamed(context, LoginPage.routeName));
+    },
+    child: const Text('Logout'),
+    )
+        ],
+          ) ]),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         tooltip: 'Add Contact',

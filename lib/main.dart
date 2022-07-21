@@ -1,5 +1,7 @@
 import 'package:contacts_app_by_flutter/pages/contact_details-page.dart';
 import 'package:contacts_app_by_flutter/pages/contact_list_page.dart';
+import 'package:contacts_app_by_flutter/pages/launcher_page.dart';
+import 'package:contacts_app_by_flutter/pages/login_page.dart';
 import 'package:contacts_app_by_flutter/pages/new_contact_page.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +22,10 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      initialRoute: ContactListPage.routeName,
+      initialRoute: LauncherPage.routeName,
       routes: {
+        LoginPage.routeName:(context)=>LoginPage(),
+        LauncherPage.routeName:(context)=>LauncherPage(),
         ContactListPage.routeName:(context)=>ContactListPage(),
         ContactDetailsPage.routeName:(context)=>ContactDetailsPage(),
         NewContactPage.routeName:(context)=>NewContactPage(),

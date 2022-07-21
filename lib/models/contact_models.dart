@@ -5,6 +5,9 @@ const String tableContactColName='name';
 const String tableContactColNumber='number';
 const String tableContactColEmail='email';
 const String tableContactColAddress='address';
+const String tableContactColCompany='address';
+const String tableContactColDesignation='address';
+const String tableContactColWebsite='address';
 const String tableContactColDob='dob';
 const String tableContactColGender='gender';
 const String tableContactColImage='image';
@@ -28,17 +31,17 @@ class ContactModel{
 
   ContactModel(
       {this.id,
-     required this.name,
-     required this.number,
-      this.email,
-      this.address,
-      this.company,
-      this.designation,
-      this.website,
-      this.dob,
-      this.image,
-      this.gender,
-      this.isFavourite=false
+        required this.name,
+        required this.number,
+        this.email,
+        this.address,
+        this.company,
+        this.designation,
+        this.website,
+        this.dob,
+        this.image,
+        this.gender,
+        this.isFavourite=false
       });
   Map<String,dynamic> toMap(){
     var map=<String,dynamic> {
@@ -46,6 +49,9 @@ class ContactModel{
       tableContactColNumber :number,
       tableContactColEmail :email,
       tableContactColAddress :address,
+      tableContactColCompany: company,
+      tableContactColDesignation: designation,
+      tableContactColWebsite: website,
       tableContactColDob :dob,
       tableContactColGender :gender,
       tableContactColImage :image,
@@ -62,6 +68,9 @@ class ContactModel{
     number: map[tableContactColNumber],
     email: map[tableContactColEmail],
     address: map[tableContactColAddress],
+    company: map[tableContactColCompany],
+    designation: map[tableContactColDesignation],
+    website: map[tableContactColWebsite],
     dob: map[tableContactColDob],
     gender: map[tableContactColGender],
     image: map[tableContactColImage],

@@ -1,10 +1,12 @@
-import 'dart:html';
+
 import 'package:contacts_app_by_flutter/models/contact_models.dart';
 import 'package:contacts_app_by_flutter/pages/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
+
 
 class NewContactPage extends StatefulWidget {
   static const String routeName='/new_contact';
@@ -17,10 +19,13 @@ class NewContactPage extends StatefulWidget {
 class _NewContactPageState extends State<NewContactPage> {
 
   final formKey = GlobalKey<FormState>();
-  String? dob;
-  String? groupValue;
-  String? _imagePath;
   ImageSource _imageSource = ImageSource.camera;
+
+
+  String? groupValue;
+  String? imagePath;
+  String? dob;
+
 
   @override
   void dispose() {
@@ -39,203 +44,159 @@ class _NewContactPageState extends State<NewContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('New Contact Page'),
-          actions: [
-            IconButton(onPressed: _savebutton,
-                icon: Icon(Icons.save))
+      appBar: AppBar(
+        title: Text('New Contact Page'),
+        actions: [
+          IconButton(onPressed: _savebutton,
+              icon: Icon(Icons.save))
 
-          ],
-        ),
-        body: Form(
-            key: formKey,
-            child: ListView(
-                children: [
-                  Card(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
+        ],
+      ),
+      body: Form(
+        key: formKey,
+        child: ListView(
+            children: [
+              Card(
+
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(90),
+
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+
+                    Icon(Icons.add_a_photo_sharp,),
+                    Image.asset('images/personholder.jpg',
+                      height: 50, width: 50,
+                      fit: BoxFit.contain,
+                    ),
+                    Row(
                       children: [
-                        Container(
-                          margin: EdgeInsets.all(20),
-                          child: _imagePath == null
-                              ? Image.asset(
-                            'images/personholder.jpg',
-                            height: 200,
-                            width: 200,
-                            fit: BoxFit.contain,
-                          )
-                              : Image.file(
-                            File(
-                              _imagePath!,
-                            ),
-                            height: 200,
-                            width: 200,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                    // background (button) color
-                                    onPrimary:
-                                    Colors.black54, // foreground (text) color
-                                  ),
-                                  onPressed: () {
-                                    _imageSource = ImageSource.camera;
-                                    _getImage();
-                                  },
-                                  child: Text(
-                                    'Camera',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                    // background (button) color
-                                    onPrimary:
-                                    Colors.black54, // foreground (text) color
-                                  ),
-                                  onPressed: () {
-                                    _imageSource = ImageSource.gallery;
-                                    _getImage();
-                                  },
-                                  child: Text(
-                                    'Gallery',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-
-                            ],
-                          ),
-                        ),
-
-                        Card(
-                          child: Row(
-                            children: [
-                              TextButton(onPressed: _selectDate,
-                                  child: Text('Select Date')),
-                              Text(dob == null ? 'No Date selected' : dob!),
-                            ],
-
-
-                          ),
-                        ),
-                        Card(
-                          child: Row(
-                            children: [
-                              Text('Select Gender'),
-                              Radio<String>(
-                                value: 'Male',
-                                groupValue: groupValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    groupValue = value;
-                                  });
-                                },
-
-                              ),
-                              Text('Male'),
-                              Radio<String>(
-                                  value: 'Female',
-                                  groupValue: groupValue,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      groupValue = value;
-                                    });
-                                  }),
-                              Text('Female'),
-                            ],
-                          ),
-
-                        ),
-                        TextFormField(
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            labelText: 'name',
-                            prefixIcon: Icon(Icons.person),
-                          ), validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'this field is must be required';
-                          }
-                          if (value.length > 20) {
-                            return 'Name must be in 20 character';
-                          }
-                        },
-                        ),
-                        TextFormField(
-                          controller: numberController,
-                          decoration: InputDecoration(
-                            labelText: 'number',
-                            prefixIcon: Icon(Icons.numbers),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty ||
-                                value.length < 6) {
-                              return 'password length must be 6 character';
-                            }
-                          },
-                        ),
-                        TextFormField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            labelText: 'email',
-                            prefixIcon: Icon(Icons.email),
-
-                          ),
-                        ),
-                        TextFormField(
-                          controller: addressController,
-                          decoration: InputDecoration(
-                            labelText: 'address',
-                            prefixIcon: Icon(Icons.location_on_outlined),
-
-                          ),
-                        ),
-                        TextFormField(
-                          controller: companyController,
-                          decoration: InputDecoration(
-                            labelText: 'company',
-                            prefixIcon: Icon(Icons.work_history),
-
-                          ),
-                        ),
-                        TextFormField(
-                          controller: designationController,
-                          decoration: InputDecoration(
-                            labelText: 'designation',
-                            prefixIcon: Icon(Icons.signpost),
-
-                          ),
-                        ),
-                        TextFormField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            labelText: 'website',
-                            prefixIcon: Icon(Icons.wordpress),
-
-                          ),
-                        ),
-
+                        ElevatedButton(
+                            onPressed: () {
+                              _imageSource = ImageSource.camera;
+                              getImages();
+                            },
+                            child: Text('Camera')),
+                        ElevatedButton(onPressed: () {
+                          _imageSource = ImageSource.gallery;
+                          getImages();
+                        }, child: Text('Gallery'))
                       ],
+                    )
+
+                  ],
+                ),
+              ),
+              Card(
+                child: TextButton(
+                  onPressed: selectDates(),
+                  child: Text(dob == null ? 'Select Date' :
+                  dob!),
+                ),
+              ),
+
+              Card(
+                child: Row(
+                  children: [
+                    Text('Select Gender'),
+                    Radio<String>(
+                      value: 'Male',
+                      groupValue: groupValue,
+                      onChanged: (value) {
+                        setState(() {
+                          groupValue = value;
+                        });
+                      },
 
                     ),
-                  ),
-                ])
-        ));
+                    Text('Male'),
+                    Radio<String>(
+                        value: 'Female',
+                        groupValue: groupValue,
+                        onChanged: (value) {
+                          setState(() {
+                            groupValue = value;
+                          });
+                        }),
+                    Text('Female'),
+                  ],
+                ),
+
+              ),
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'name',
+                  prefixIcon: Icon(Icons.person),
+                ), validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'this field is must be required';
+                }
+                if (value.length > 20) {
+                  return 'Name must be in 20 character';
+                }
+              },
+              ),
+              TextFormField(
+                controller: numberController,
+                decoration: InputDecoration(
+                  labelText: 'number',
+                  prefixIcon: Icon(Icons.numbers),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty ||
+                      value.length < 6) {
+                    return 'password length must be 6 character';
+                  }
+                },
+              ),
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'email',
+                  prefixIcon: Icon(Icons.email),
+
+                ),
+              ),
+              TextFormField(
+                controller: addressController,
+                decoration: InputDecoration(
+                  labelText: 'address',
+                  prefixIcon: Icon(Icons.location_on_outlined),
+
+                ),
+              ),
+              TextFormField(
+                controller: companyController,
+                decoration: InputDecoration(
+                  labelText: 'company',
+                  prefixIcon: Icon(Icons.work_history),
+
+                ),
+              ),
+              TextFormField(
+                controller: designationController,
+                decoration: InputDecoration(
+                  labelText: 'designation',
+                  prefixIcon: Icon(Icons.signpost),
+
+                ),
+              ),
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'website',
+                  prefixIcon: Icon(Icons.wordpress),
+
+                ),
+              ),
+
+            ]),
+
+      ),
+    );
   }
 
   void _savebutton() {
@@ -253,25 +214,25 @@ class _NewContactPageState extends State<NewContactPage> {
     }
   }
 
-  void _selectDate() async {
+  void getImages() async {
+    final selectedImage = await ImagePicker().pickImage(source: _imageSource);
+    if (selectedImage != null) {
+      setState(() {
+        imagePath = selectedImage.path;
+      });
+    }
+  }
+
+
+  selectDates() async {
     final selectedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(1950),
         lastDate: DateTime.now());
-    if (_selectDate != null) {
+    if (selectedDate != null) {
       setState(() {
-dob=DateFormat('dd/MM/yyyy').format(selectedDate!);
-
-      });
-    }
-  }
-
-  void _getImage() async {
-    final selectedImage = await ImagePicker().pickImage(source: _imageSource);
-    if (selectedImage != null) {
-      setState(() {
-        _imagePath = selectedImage.path;
+        dob = DateFormat('dd/MM/yyyy').format(selectedDate);
       });
     }
   }
